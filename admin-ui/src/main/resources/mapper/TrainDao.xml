@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hang.people_management.dao.TrainDao">
+    <resultMap id="trainMap" type="Train">
+        <id column="t_id" property="tId"/>
+        <result column="t_name" property="tName"/>
+        <result column="description" property="description"/>
+        <result column="start_time" property="startTime"/>
+        <result column="close_time" property="closeTime"/>
+        <association property="employee" javaType="Employee">
+            <id column="e_id" property="eId" />
+            <result column="e_name" property="eName"/>
+        </association>
+    </resultMap>
+
+    <insert id="insert" parameterType="Train">
+        insert into train(t_name, description, start_time, close_time, e_id)
+        values (#{tName}, #{description}, #{startTime}, #{closeTime}, #{employee.eId})
+    </insert>
+
+    <delete id="deleteById" parameterType="Train">
+        delete from train
+        where t_id = #{tId}
+    </delete>
+
+    <update id="updateById" parameterType="Train">
+        update train
+        set t_name = #{tName}, start_time = #{startTime}, close_time = #{closeTime}, description = #{description}, e_id = #{employee.eId}
+        where t_id = #{tId}
+    </update>
+
+    <select id="selectList" resultMap="trainMap">
+        select t.*, e.* from train t, employee e
+        where t.e_id = e.e_id
+    </select>
+    <select id="selectById" resultMap="trainMap">
+        select * from train
+        where t_id = #{tId}
+    </select>
+
+    <select id="selectByPage" resultMap="trainMap" parameterType="com.hang.people_management.util.Condition">
+        select t.*, e.* from train t, employee e
+        where t.e_id = e.e_id
+        limit #{currentPage}, #{pageSize}
+    </select>
+    <select id="selectTotal" resultType="java.lang.Long">
+        select count(*) as total from train
+    </select>
+</mapper>
