@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hang.people_management.dao.JLevelDao">
+    <resultMap id="jlevelMap" type="JLevel">
+        <id column="jlevel_id" property="jlevelId"/>
+        <result column="jlevel_name" property="jlevelName"/>
+        <result column="jdescription" property="jdescription"/>
+    </resultMap>
+    <insert id="insert" parameterType="JLevel">
+        insert into jlevel(jdescription, jlevel_name)
+        values (#{jdescription}, #{jlevelName})
+    </insert>
+
+    <delete id="deleteById" parameterType="JLevel">
+        delete from jlevel
+        where jlevel_id = #{jlevelId}
+    </delete>
+
+    <update id="updateById" parameterType="JLevel">
+        update jlevel
+        set jlevel_name = #{jlevelName}, jdescription = #{jdescription}
+        where jlevel_id = #{jlevelId}
+    </update>
+
+    <select id="selectList" resultMap="jlevelMap">
+        select * from jlevel
+    </select>
+    <select id="selectById" resultMap="jlevelMap">
+        select * from jlevel
+        where jlevel_id = #{jlevelId}
+    </select>
+</mapper>
